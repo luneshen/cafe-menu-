@@ -1,0 +1,49 @@
+def login():
+    username = input("Enter your username: ")
+    password = input("Enter your password: ")
+    with open("passwords.txt", "r") as f:
+        for line in f:
+            fields = line.strip().split(":")
+            if len(fields) == 2 and fields[0] == username and fields[1] == password:
+                print("Login successful!")
+                return True
+    print("Invalid username or password.")
+    return False
+
+def display_menu(menu):
+    print("Menu:")
+    for item, price in menu.items():
+        print(f"{item}: ${price:.2f}")
+
+def place_order(menu):
+    order = []
+    while True:
+        choice = input("Enter the item number to add to your order (or 'q' to quit): ")
+        if choice == 'q':
+            break
+        elif choice.isdigit() and int(choice) in range(1, len(menu) + 1):
+            item = list(menu.keys())[int(choice) - 1]
+            order.append(item)
+            print(f"{item} added to your order.")
+        else:
+            print("Invalid choice. Please try again.")
+    return order
+
+def calculate_total(order, menu):
+    total = sum([menu[item] for item in order])
+    return total
+
+menu = {
+    "1. Matcha Latte": 7.00,
+    "2. Latte": 5.00,
+    "3. Hot Chocolate": 6.00,
+    "4. Macaron": 3.00,
+    "5. Cup Cake": 2.00,
+    "6. Swiss Roll": 8.00
+}
+
+if login():
+    display_menu(menu)
+    order = place_order(menu)
+    total_price = calculate_total(order, menu)
+    print(f"Total price: ${total_price:.2f}")
