@@ -1,3 +1,4 @@
+#login to the account
 def login():
     username = input("Enter your username: ")
     password = input("Enter your password: ")
@@ -5,16 +6,16 @@ def login():
         for line in f:
             fields = line.strip().split(":")
             if len(fields) == 2 and fields[0] == username and fields[1] == password:
-                print("Login successful!")
+                print("Login successful!")#login successful and move to the next part of function
                 return True
     print("Invalid username or password.")
     return False
-
+#print out the menu
 def display_menu(menu):
     print("Menu:")
     for item, price in menu.items():
         print(f"{item}: ${price:.2f}")
-
+#record the amount of order by the user
 def place_order(menu):
     order = []
     while True:
@@ -28,11 +29,11 @@ def place_order(menu):
         else:
             print("Invalid choice. Please try again.")
     return order
-
+#calculate the total price of the order and destroy the function
 def calculate_total(order, menu):
     total = sum([menu[item] for item in order])
     return total
-
+#the order menu for the user to choose
 menu = {
     "1. Matcha Latte": 7.00,
     "2. Latte": 5.00,
@@ -41,7 +42,7 @@ menu = {
     "5. Cup Cake": 2.00,
     "6. Swiss Roll": 8.00
 }
-
+#call the login function to execute whole part text function
 if login():
     display_menu(menu)
     order = place_order(menu)

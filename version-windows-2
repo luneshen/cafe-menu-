@@ -7,21 +7,24 @@ def main():
     root.title("Login")
     root.geometry("150x100")
 
+    # Create buttons for sign-in, sign-up, and exit
     btnaddaccount = Button(root, text="Sign in", command=check_account)
     btnaddaccount.grid(row=0, column=0)
 
     btnsrchaccount = Button(root, text="Sign up", command=add_account)
     btnsrchaccount.grid(row=1, column=0)
 
-    btnexit = Button(root, text="3. Exit", command=close_window)
+    btnexit = Button(root, text="Exit", command=close_window)
     btnexit.grid(row=2, column=0)
 
 def check_account():
+    # Function to check the account credentials
     global checking_account_window
     checking_account_window = Toplevel(root)
     checking_account_window.title("Sign in")
     checking_account_window.geometry("300x150")
 
+    # Create labels and entry widgets for account name and password
     account_label = Label(checking_account_window, text="Enter account name:")
     account_label.grid(row=0, column=0)
     account_entry = Entry(checking_account_window)
@@ -32,13 +35,7 @@ def check_account():
     password_entry = Entry(checking_account_window, show="*")
     password_entry.grid(row=1, column=1)
 
-    checking_button = Button(checking_account_window, text="Done",
-                             command=lambda: checking_password(account_entry.get(), password_entry.get()))
-    checking_button.grid(row=2, column=0)
-
-    search_button = Button(checking_account_window, text="Forget password", command=search_account)
-    search_button.grid(row=2, column=1)
-
+    # Function to validate the entered account credentials
     def checking_password(username, password):
         with open("passwords.txt", "r") as f:
             for line in f:
@@ -51,12 +48,22 @@ def check_account():
             else:
                 messagebox.showerror("Error", "Invalid username or password!")
 
+    # Create buttons for submitting the credentials and searching for a forgotten password
+    checking_button = Button(checking_account_window, text="Done",
+                             command=lambda: checking_password(account_entry.get(), password_entry.get()))
+    checking_button.grid(row=2, column=0)
+
+    search_button = Button(checking_account_window, text="Forget password", command=search_account)
+    search_button.grid(row=2, column=1)
+
 def add_account():
+    # Function to add a new account
     global add_account_window
     add_account_window = Toplevel(root)
     add_account_window.title("Sign up")
     add_account_window.geometry("300x150")
 
+    # Create labels and entry widgets for account name and password
     account_label = Label(add_account_window, text="Enter account name: ")
     account_label.grid(row=0, column=0)
     account_entry = Entry(add_account_window)
@@ -67,6 +74,7 @@ def add_account():
     password_entry = Entry(add_account_window, show="*")
     password_entry.grid(row=1, column=1)
 
+    # Function to save the new account
     def save_account():
         account = account_entry.get()
         password = password_entry.get()
@@ -75,15 +83,18 @@ def add_account():
         add_account_window.destroy()
         messagebox.showinfo("Success", "Welcome!")
 
+    # Create a button for saving the account
     save_button = Button(add_account_window, text="Done", command=save_account)
     save_button.grid(row=2, column=1)
 
 def search_account():
+    # Function to search for a forgotten password
     global search_account_window
     search_account_window = Toplevel(root)
     search_account_window.title("Search Account")
     search_account_window.geometry("400x150")
 
+    # Create labels and entry widgets for account name and password
     account_label = Label(search_account_window, text="Enter account name: ")
     account_label.grid(row=0, column=0)
     account_entry = Entry(search_account_window)
@@ -94,6 +105,7 @@ def search_account():
     password_entry = Entry(search_account_window, state="readonly")
     password_entry.grid(row=1, column=1)
 
+    # Function to find and display the password
     def find_password():
         account = account_entry.get()
         with open("passwords.txt", "r") as f:
@@ -106,10 +118,12 @@ def search_account():
                     password_entry.configure(state="readonly")
                     break
 
+    # Create a button for searching the password
     search_button = Button(search_account_window, text="Search", command=find_password)
     search_button.grid(row=2, column=1)
 
 def cafe_menu():
+    # Function to display the café menu
     global cafe_menu_window, selected_items
 
     cafe_menu_window = Toplevel(root)
@@ -147,10 +161,12 @@ def cafe_menu():
     add_to_cart_label = Label(cafe_menu_window, text="Items you have chosen: []")
     add_to_cart_label.pack()
 
+    # Function to calculate the total price and update the labels
     def calculate_total():
         total = sum([menu[item.split(':')[0].strip()] for item in selected_items])
         total_label.config(text=f"Total: ${total:.2f}")
 
+    # Function to add the selected item to the cart
     def add_to_cart():
         selection = menu_listbox.curselection()
         if selection:
@@ -159,10 +175,12 @@ def cafe_menu():
             add_to_cart_label.config(text=f"Items in cart: {selected_items}")
             calculate_total()
 
+    # Create a button for adding items to the cart
     add_to_cart_button = Button(cafe_menu_window, text="Add to Cart", command=add_to_cart)
     add_to_cart_button.pack()
 
 def close_window():
+    # Function to close the application window
     root.destroy()
 
 if __name__ == '__main__':

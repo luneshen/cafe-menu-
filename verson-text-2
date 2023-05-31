@@ -1,24 +1,33 @@
 def login():
+    # Prompt the user to enter their username and password
     username = input("Enter your username: ")
     password = input("Enter your password: ")
+    
+    # Open the "passwords.txt" file to check for valid credentials
     with open("passwords.txt", "r") as f:
         for line in f:
             fields = line.strip().split(":")
+            # Check if the line has valid fields and matches the entered username and password
             if len(fields) == 2 and fields[0] == username and fields[1] == password:
                 print("Login successful!")
                 return True
+    # If no matching credentials are found, display an error message
     print("Invalid username or password.")
     return False
 
 def register():
+    # Prompt the user to enter a new username and password
     username = input("Enter a new username: ")
     password = input("Enter a new password: ")
+    
+    # Open the "passwords.txt" file to append the new username and password
     with open("passwords.txt", "a") as f:
         f.write(f"{username}:{password}\n")
+    
     print("Registration successful.")
 
-
 def display_menu(menu):
+    # Display the menu items and their prices
     print("Menu:")
     for item, price in menu.items():
         print(f"{item}: ${price:.2f}")
@@ -26,26 +35,33 @@ def display_menu(menu):
 def place_order(menu):
     order = []
     while True:
+        # Prompt the user to enter the item number or quit
         choice = input("Enter the item number to add to your order (or 'q' to quit): ")
+        
         if choice == 'q':
             break
         elif choice.isdigit() and int(choice) in range(1, len(menu) + 1):
+            # Add the selected item to the order list
             item = list(menu.keys())[int(choice) - 1]
             order.append(item)
             print(f"{item} added to your order.")
         else:
             print("Invalid choice. Please try again.")
+    
     return order
 
 def calculate_total(order, menu):
+    # Calculate the total price of the order based on the menu prices
     total = sum([menu[item] for item in order])
     return total
 
 def main():
     print("Welcome!")
+    # Prompt the user to choose between login and registration
     choice = input("Enter '1' to login, '2' to register: ")
 
     if choice == '1':
+        # If the user chooses login, call out the login function
         if login():
             menu = {
                 "1. Matcha Latte": 7.00,
@@ -55,13 +71,18 @@ def main():
                 "5. Cup Cake": 2.00,
                 "6. Swiss Roll": 8.00
             }
+            # Display the menu
             display_menu(menu)
+            # Let the user to place an order
             order = place_order(menu)
+            # Calculate the total price of the order
             total_price = calculate_total(order, menu)
             print(f"Total price: ${total_price:.2f}")
     elif choice == '2':
+        # If the user chooses registration, call the register function
         register()
     else:
         print("Invalid choice. Please try again.")
 
+# Call the main function to start the program
 main()
